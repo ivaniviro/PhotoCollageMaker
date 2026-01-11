@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Фотоколлаж - Редактор альбомов</title>
+    <!-- Подключаем стили -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Подключаем иконки (опционально, для будущих кнопок) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Подключаем библиотеку Fabric.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Верхняя панель инструментов -->
+        <header class="main-header">
+            <div class="logo">
+                <i class="fas fa-camera-retro"></i>
+                <h1>Конструктор Фотоальбомов</h1>
+            </div>
+            <div class="project-info">
+                <span>Проект: <strong>Новый альбом</strong></span>
+                <span> | Страница: <strong>1</strong></span>
+            </div>
+        </header>
+
+        <div class="workspace">
+            <!-- Левая панель: Инструменты и библиотека -->
+            <aside class="left-sidebar">
+                <div class="tool-panel">
+                    <h3><i class="fas fa-tools"></i> Инструменты</h3>
+                    <button id="btn-add-photo" class="tool-btn">
+                        <i class="fas fa-image"></i> Добавить фото
+                    </button>
+                    <button id="btn-add-text" class="tool-btn">
+                        <i class="fas fa-font"></i> Добавить текст
+                    </button>
+                    <button id="btn-select-bg" class="tool-btn">
+                        <i class="fas fa-fill-drip"></i> Фон страницы
+                    </button>
+                </div>
+                <div class="library-panel">
+                    <h3><i class="fas fa-photo-video"></i> Библиотека</h3>
+                    <div class="library-controls">
+                        <button id="btn-upload" class="tool-btn small">
+                            <i class="fas fa-upload"></i> Загрузить
+                        </button>
+                        <input type="file" id="file-input" multiple accept="image/*" style="display: none;">
+                    </div>
+                    <div id="image-library" class="image-library">
+                        <!-- Сюда JavaScript добавит превью загруженных фото -->
+                        <p class="empty-library">Загрузите фотографии</p>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Центральная область: Холст для редактирования -->
+            <main class="editor-area">
+                <div class="canvas-container">
+                    <canvas id="main-canvas"></canvas>
+                </div>
+                <div class="canvas-controls">
+                    <button id="btn-zoom-in"><i class="fas fa-search-plus"></i></button>
+                    <button id="btn-zoom-out"><i class="fas fa-search-minus"></i></button>
+                    <button id="btn-zoom-fit"><i class="fas fa-expand-arrows-alt"></i></button>
+                    <span id="zoom-level">100%</span>
+                </div>
+            </main>
+
+            <!-- Правая панель: Свойства и шаблоны -->
+            <aside class="right-sidebar">
+                <div class="properties-panel">
+                    <h3><i class="fas fa-sliders-h"></i> Свойства</h3>
+                    <div id="properties-content">
+                        <p class="empty-props">Выберите объект на холсте</p>
+                    </div>
+                </div>
+                <div class="templates-panel">
+                    <h3><i class="fas fa-th-large"></i> Шаблоны рамок</h3>
+                    <div id="templates-container">
+                        <!-- Сюда добавим превью шаблонов -->
+                        <p class="empty-templates">Шаблоны загрузятся позже</p>
+                    </div>
+                </div>
+            </aside>
+        </div>
+
+        <!-- Нижняя панель: Страницы и экспорт -->
+        <footer class="main-footer">
+            <div class="pages-control">
+                <button id="btn-add-page"><i class="fas fa-plus"></i> Страница</button>
+                <div id="pages-list" class="pages-list">
+                    <span class="page-tab active">1</span>
+                </div>
+            </div>
+            <div class="export-control">
+                <button id="btn-save-project" class="btn-secondary">
+                    <i class="fas fa-save"></i> Сохранить проект
+                </button>
+                <button id="btn-export-page" class="btn-primary">
+                    <i class="fas fa-file-export"></i> Экспорт страницы
+                </button>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Подключаем наш основной JavaScript файл -->
+    <script src="main.js"></script>
+</body>
+</html>
