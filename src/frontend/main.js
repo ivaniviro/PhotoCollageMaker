@@ -124,18 +124,46 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // 9. Обработчик drop на холсте для перетаскивания из библиотеки
-    canvasElement.addEventListener('dragover', function(e) {
-        e.preventDefault(); // Разрешаем drop
+    // Важно: вешаем на canvas wrapper (родительский div), а не на canvas элемент
+    const canvasContainer = document.querySelector('.canvas-container');
+    
+    canvasContainer.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        canvasContainer.style.backgroundColor = '#f0f0f0'; // визуальный фидбек
     });
 
-    canvasElement.addEventListener('drop', function(e) {
+    canvasContainer.addEventListener('dragleave', function(e) {
         e.preventDefault();
-        
-        const imageUrl = e.dataTransfer.getData('text/plain');
-        if (!imageUrl) return;
+        e.stopPropagation();
+        canvasContainer.style.backgroundColor = ''; // убираем подсветку
+    });
 
+    canvasContainer.addEventListener('drop', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        canvasContainer.style.backgroundColor = ''; // убираем подсветку
+        
+        console.log('Drop event fired on canvas container!');
+        const imageUrl = e.dataTransfer.getData('text/plain');
+        console.log('Image URL from dataTransfer:', imageUrl);
+        
+        if (!imageUrl) {
+            console.log('No image URL in data transfer');
+            return;
+        }
+
+        console.log('Loading image from URL:', imageUrl);
+        
         // Добавляем изображение на холст
         fabric.Image.fromURL(imageUrl, function(img) {
+            if (!img) {
+                console.error('Failed to load image from URL:', imageUrl);
+                return;
+            }
+            
+            console.log('Image loaded successfully, dimensions:', img.width, 'x', img.height);
+            
             // Ограничиваем максимальный размер
             const maxWidth = 400;
             const maxHeight = 400;
@@ -151,15 +179,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 top: 200,
                 scaleX: scale,
                 scaleY: scale,
-                hasControls: true, // показываем элементы управления
+                hasControls: true,
                 hasBorders: true,
-                lockUniScaling: false // разрешаем масштабирование с сохранением пропорций
+                lockUniScaling: false
             });
 
             canvas.add(img);
             canvas.setActiveObject(img);
             canvas.renderAll();
             console.log('Изображение добавлено на холст');
+        }, {
+            crossOrigin: 'anonymous'
         });
     });
 
